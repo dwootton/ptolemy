@@ -1,0 +1,259 @@
+{
+  "name": "ptolemy",
+  "displayName": "Ptolemy",
+  "description": "A semantic map of exploratory data analysis in VS Code.",
+  "version": "0.0.2",
+  "publisher": "dwootton",
+  "engines": {
+    "vscode": "^1.88.0",
+    "node": ">=22"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:meridian-v2.sidebar",
+    "onCommand:meridian-v2.open"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "meridian-v2.open",
+        "title": "Open Ptolemy Sidebar"
+      },
+      {
+        "command": "meridian.openaiSmokeTest",
+        "title": "Ptolemy: Test OpenAI Connection"
+      },
+      {
+        "command": "meridian.createNoteFromCell",
+        "title": "Ptolemy: Add Analysis Note"
+      },
+      {
+        "command": "meridian.createNote",
+        "title": "Ptolemy: Create Analysis Note"
+      },
+      {
+        "command": "meridian.createNoteFromActiveCell",
+        "title": "Ptolemy: Add Note"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "meridian",
+          "title": "Ptolemy",
+          "icon": "$(symbol-misc)"
+        }
+      ]
+    },
+    "views": {
+      "meridian": [
+        {
+          "type": "webview",
+          "id": "meridian-v2.sidebar",
+          "name": "Ptolemy"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Ptolemy",
+      "properties": {
+        "meridian.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API key for generating analyses and embeddings. Get your key from https://platform.openai.com/api-keys",
+          "scope": "window"
+        },
+        "meridian.instrumentation.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Opt in to local interaction logging and session replay. Reload the window after changing this setting.",
+          "scope": "window"
+        },
+        "meridian.studyModeOverride": {
+          "type": "boolean",
+          "default": false,
+          "description": "Force-enable Study Mode at runtime (requires window reload). Overrides build-time flags.",
+          "scope": "window"
+        },
+        "meridian.useMockData": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use mock data instead of calling OpenAI API (useful for development)",
+          "scope": "window"
+        },
+        "meridian.notebookSync.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic synchronization of notebook changes with analets",
+          "scope": "window"
+        },
+        "meridian.notebookSync.debounceDelay": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 500,
+          "maximum": 5000,
+          "description": "Delay in milliseconds before processing notebook changes (prevents multiple rapid saves)",
+          "scope": "window"
+        },
+        "meridian.notebookSync.autoCreateAnalets": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically create analets from new notebooks with compatible content",
+          "scope": "window"
+        },
+        "meridian.notebookSync.minQuestionLength": {
+          "type": "number",
+          "default": 10,
+          "description": "Minimum character length for a markdown cell to be considered a question",
+          "scope": "window"
+        },
+        "meridian.notebookSync.ignorePatterns": {
+          "type": "array",
+          "default": [
+            "**/test/**",
+            "**/.ipynb_checkpoints/**"
+          ],
+          "description": "Glob patterns for notebooks to ignore during sync",
+          "scope": "window"
+        },
+        "meridian.firebase.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Opt in to uploading recorded study sessions to your Firebase project. Requires instrumentation and FIREBASE_CONFIG.",
+          "scope": "window"
+        },
+        "meridian.firebase.userId": {
+          "type": "string",
+          "default": "",
+          "description": "User ID for Firebase logging sessions (helps identify your data)",
+          "scope": "window"
+        },
+        "meridian.firebase.emulator.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send Firebase writes to local Firestore emulator (requires emulator running)",
+          "scope": "window"
+        },
+        "meridian.firebase.emulator.host": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Firestore emulator host",
+          "scope": "window"
+        },
+        "meridian.firebase.emulator.port": {
+          "type": "number",
+          "default": 8080,
+          "description": "Firestore emulator port",
+          "scope": "window"
+        },
+        "meridian.firebase.logLevel": {
+          "type": "string",
+          "default": "error",
+          "enum": [
+            "debug",
+            "error",
+            "silent"
+          ],
+          "description": "Client log verbosity for Firebase Firestore SDK",
+          "scope": "window"
+        },
+        "meridian.disableStudyMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable study-specific workflows even in a study build. Ordinary builds already have study mode disabled.",
+          "scope": "window"
+        }
+      }
+    },
+    "menus": {
+      "notebook/cell/title": [
+        {
+          "command": "meridian.createNoteFromCell",
+          "when": "notebookType == jupyter-notebook",
+          "group": "meridian"
+        }
+      ],
+      "notebook/cell/output": [
+        {
+          "command": "meridian.createNoteFromCell",
+          "when": "notebookType == jupyter-notebook",
+          "group": "meridian"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "meridian.createNoteFromActiveCell",
+          "when": "notebookType == jupyter-notebook && activeEditor == workbench.editor.notebook",
+          "group": "meridian"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run build:clean",
+    "prebuild": "node ./scripts/toggle-study-mode.js false",
+    "build": "pnpm run build:extension && pnpm run build:webview",
+    "build:study": "node ./scripts/toggle-study-mode.js true && STUDY_MODE=true pnpm run build:extension:study && VITE_STUDY_MODE=true STUDY_MODE=true pnpm run build:webview",
+    "build:clean": "pnpm run clean && pnpm run build",
+    "build:extension": "pnpm run bundle:extension",
+    "build:extension:study": "pnpm run bundle:extension:study",
+    "bundle:extension": "esbuild src/extension.ts --bundle --platform=node --external:vscode --format=cjs --sourcemap --outfile=out/extension.js",
+    "bundle:extension:study": "esbuild src/extension.ts --bundle --platform=node --external:vscode --format=cjs --sourcemap --outfile=out/extension.js --define:process.env.STUDY_MODE='\"true\"'",
+    "typecheck": "tsc -p ./ --noEmit && pnpm --dir webview-ui run build:check",
+    "build:webview": "cd webview-ui && pnpm run build",
+    "build:check": "pnpm run typecheck && pnpm run lint:all && pnpm test && pnpm run build",
+    "watch": "tsc -watch -p ./",
+    "watch:webview": "cd webview-ui && pnpm run dev",
+    "dev": "concurrently \"pnpm run watch\" \"pnpm run watch:webview\" --names \"ext,ui\" --prefix-colors \"blue,green\"",
+    "dev:extension": "pnpm run watch",
+    "dev:webview": "pnpm run watch:webview",
+    "lint": "eslint src --ext ts",
+    "lint:webview": "cd webview-ui && pnpm run lint",
+    "lint:all": "pnpm run lint && pnpm run lint:webview",
+    "test": "node --test tests/*.test.cjs",
+    "clean": "rimraf out && cd webview-ui && rimraf dist",
+    "package": "vsce package --no-yarn --no-dependencies",
+    "install:all": "pnpm install --frozen-lockfile && pnpm --dir webview-ui install --frozen-lockfile",
+    "check:release": "node scripts/check-release.cjs"
+  },
+  "devDependencies": {
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/vsce": "^3.6.0",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.21.5",
+    "eslint": "^8.28.0",
+    "rimraf": "^5.0.0",
+    "ts-morph": "26.0.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "firebase": "^12.19.0",
+    "openai": "^4.67.3",
+    "papaparse": "^5.5.3",
+    "zod": "^3.25.76"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dwootton/ptolemy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dwootton/ptolemy/issues"
+  },
+  "homepage": "https://github.com/dwootton/ptolemy#readme",
+  "packageManager": "pnpm@10.15.0",
+  "pnpm": {
+    "overrides": {
+      "@grpc/grpc-js@<1.13.6": "^1.13.6",
+      "form-data@^4.0.0": "^4.0.6"
+    }
+  }
+}

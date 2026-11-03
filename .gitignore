@@ -1,0 +1,36 @@
+# Dependencies and builds
+node_modules/
+.yarn/
+out/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+*.vsix
+*.zip
+*.tgz
+artifacts/
+
+# Credentials and local data
+.env
+.env.*
+!.env.example
+*.local
+.meridian/
+.ptolemy/
+.user_study/
+.user-study/
+logs/
+*.log
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Editor and agent state
+.DS_Store
+.idea/
+.cursor/
+.omx/
+*.swp
+*.swo
+.eslintcache

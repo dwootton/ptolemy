@@ -1,0 +1,1 @@
+export { StudyFinishButton } from './StudyFinishButton';

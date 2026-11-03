@@ -1,0 +1,13 @@
+month,region,product,units,revenue
+January,North,Notebook,12,60
+January,South,Notebook,8,40
+January,North,Pen,30,45
+January,South,Pen,20,30
+February,North,Notebook,15,75
+February,South,Notebook,11,55
+February,North,Pen,36,54
+February,South,Pen,24,36
+March,North,Notebook,18,90
+March,South,Notebook,14,70
+March,North,Pen,40,60
+March,South,Pen,28,42

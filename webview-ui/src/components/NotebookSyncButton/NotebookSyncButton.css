@@ -1,0 +1,371 @@
+.notebook-sync-container {
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+  padding-bottom: 12px;
+}
+
+.notebook-sync-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.notebook-sync-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--vscode-font-family);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.notebook-sync-button:hover:not(:disabled) {
+  background: var(--vscode-button-hoverBackground);
+}
+
+.notebook-sync-button:active:not(:disabled) {
+  background: var(--vscode-button-activeBackground);
+  transform: translateY(1px);
+}
+
+.notebook-sync-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.notebook-sync-button.syncing {
+  background: var(--vscode-progressBar-background);
+}
+
+.sync-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+
+.sync-icon-spinning {
+  animation: spin 1s linear infinite;
+}
+
+.sync-icon-static {
+  transition: transform 0.2s ease;
+}
+
+.notebook-sync-button:hover .sync-icon-static {
+  transform: rotate(90deg);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sync-details-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--vscode-panel-border);
+  color: var(--vscode-descriptionForeground);
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: var(--vscode-font-family);
+  font-size: 11px;
+  transition: all 0.2s ease;
+}
+
+.sync-details-toggle:hover {
+  background: var(--vscode-list-hoverBackground);
+  border-color: var(--vscode-focusBorder);
+}
+
+.sync-time {
+  opacity: 0.8;
+}
+
+.details-arrow {
+  font-size: 10px;
+  transition: transform 0.2s ease;
+}
+
+.sync-details {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--vscode-editor-background);
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 4px;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sync-stats {
+  display: flex;
+  gap: 16px;
+  justify-content: space-around;
+}
+
+.sync-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vscode-foreground);
+}
+
+.stat-value.new {
+  color: var(--vscode-gitDecoration-addedResourceForeground);
+}
+
+.stat-value.updated {
+  color: var(--vscode-gitDecoration-modifiedResourceForeground);
+}
+
+.sync-progress {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-bar {
+  height: 3px;
+  background: var(--vscode-panel-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--vscode-progressBar-background);
+  border-radius: 2px;
+  animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 60%;
+    margin-left: 20%;
+  }
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
+}
+
+.progress-text {
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  text-align: center;
+}
+
+/* Sync configuration enhancements */
+.sync-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-configure-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.sync-configure-button:hover:not(:disabled) {
+  background: var(--vscode-list-hoverBackground);
+  border-color: var(--vscode-focusBorder);
+}
+
+.sync-configure-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sync-config-info {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vscode-panel-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.config-summary,
+.config-efficiency {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.config-label,
+.efficiency-label {
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  font-weight: 500;
+}
+
+.config-value,
+.efficiency-value {
+  font-size: 11px;
+  color: var(--vscode-foreground);
+}
+
+.efficiency-value {
+  font-weight: 600;
+  color: var(--vscode-charts-green);
+}
+
+/* Icon variant enhancements */
+.sync-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sync-main-button {
+  position: relative;
+}
+
+.sync-config-indicator {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  background: var(--vscode-charts-green);
+  border-radius: 50%;
+  border: 1px solid var(--vscode-editor-background);
+}
+
+.sync-config-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sync-config-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: var(--vscode-dropdown-background);
+  border: 1px solid var(--vscode-dropdown-border);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+  z-index: 1000;
+  overflow: hidden;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.config-menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--vscode-dropdown-foreground);
+  transition: background-color 0.15s ease;
+}
+
+.config-menu-item:hover {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.config-menu-divider {
+  height: 1px;
+  background: var(--vscode-dropdown-border);
+  margin: 2px 0;
+}
+
+.config-menu-info {
+  padding: 8px 12px;
+  font-size: 10px;
+  color: var(--vscode-descriptionForeground);
+  background: var(--vscode-editor-inactiveSelectionBackground);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.efficiency-info {
+  font-weight: 500;
+  color: var(--vscode-charts-green);
+}
+
+/* Compact mode for smaller screens */
+@media (max-width: 400px) {
+  .notebook-sync-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .sync-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .sync-stat {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

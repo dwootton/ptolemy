@@ -1,0 +1,8 @@
+# Only ship the manifest, public docs, and compiled application.
+**
+!package.json
+!README.md
+!LICENSE
+!out/extension.js
+!webview-ui/dist/**
+**/*.map
